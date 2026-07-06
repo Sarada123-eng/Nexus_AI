@@ -1,0 +1,53 @@
+# Python cache / bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
+credentials.json
+
+# Local databases / app state
+chatbot.db
+chatbot.db-shm
+chatbot.db-wal
+*.sqlite3
+chroma_db/
+
+# Generated media / outputs
+media/
+manim-mcp-server/src/media/
+build/
+dist/
+coverage/
+*.egg-info/
+
+# JavaScript / TypeScript artifacts
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Scratch / practice work
+practice/
+_repro.py
+tmp_*.py
+
+# Logs and misc temp files
+*.log
+*.tmp
