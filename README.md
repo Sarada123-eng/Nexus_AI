@@ -133,9 +133,25 @@ Deleting these files resets local state. Do not use the development SQLite/Chrom
 
 ## Optional MCP integration
 
-`backend.py` starts the configured chatbot MCP server over stdio when `SERVER_ACTIVATE` and `SERVER_MAIN` are set. If it cannot connect, the application falls back to built-in tools and logs the failure.
+The repository contains the MCP client configuration, but it does **not** contain the separate chatbot MCP server referenced by `SERVER_ACTIVATE` and `SERVER_MAIN`. A person forking this repository does not need to write that server from scratch: they can either:
+
+1. Clone/install their own compatible chatbot MCP server and set both variables to local absolute paths; or
+2. Leave both variables empty and run with the built-in tools only.
+
+When both variables are configured, `backend.py` launches that server over stdio. If it cannot connect, the application falls back to built-in tools and logs the failure. The paths must be changed for every developer machine; the old machine-specific paths are intentionally not part of the project.
 
 The Manim service is maintained separately in [`manim-mcp-server/README.md`](manim-mcp-server/README.md). Configure its executable path and run it independently; do not commit generated videos or temporary render directories.
+
+## What a forked setup owns
+
+Each local installation needs its own provider API keys, OAuth credentials if Google Calendar is enabled, and local runtime data. No database dump is required in the repository:
+
+- `chatbot.db` is created automatically by `chatbot_db.py` when the backend starts and stores local threads, messages, and document mappings.
+- `chroma_db/` is created automatically on first RAG initialization and stores local document embeddings.
+- Uploading documents through the API populates that user's local Chroma collection; another developer does not receive your indexed documents.
+- Deleting these ignored files resets the local installation.
+
+For production or multiple API workers, replace these local stores with shared managed persistence and add migrations, backups, authentication, and data-retention policies.
 
 ## Development checks
 

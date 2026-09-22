@@ -100,42 +100,37 @@ def _run_async_call(async_fn, *args, **kwargs):
 
 
 async def initialize_chatbot_async(graph_checkpointer):
-    server_activate = os.environ.get(
-        "SERVER_ACTIVATE",
-        r"D:/Python_Practice/Chatbot-MCP/.venv/Scripts/Activate.ps1",
-    )
-    server_main = os.environ.get(
-        "SERVER_MAIN",
-        r"D:/Python_Practice/Chatbot-MCP/main.py",
-    )
-    
-     # PowerShell command: & 'activate.ps1'; python 'main.py'
-    pw_cmd = r"powershell.exe"
-    pw_args = [
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-Command",
-        f"& '{server_activate}'; python '{server_main}'",
-    ]
-    # Start only the chatbot MCP server via stdio here. The Manim MCP server
-    # is launched separately (it was causing initialization hangs when the
-    # stdio command failed), so do not auto-spawn it from the web app.
-    client = MultiServerMCPClient({
-        "chatbot-server": {
-            "transport": "stdio",
-            "command": pw_cmd,
-            "args": pw_args,
-        }
-    })
+    server_activate = os.getenv("SERVER_ACTIVATE")
+    server_main = os.getenv("SERVER_MAIN")
+    tools = []
 
-    try:
-        tools = await client.get_tools()
-    except Exception as exc:
-        print("Failed to start local MCP server; continuing with built-in tools only")
-        print("Ensure SERVER_ACTIVATE and SERVER_MAIN point to the right files if MCP tools are required")
-        print("Error:", exc)
-        tools = []
+    if server_activate and server_main:
+        # PowerShell command: & 'activate.ps1'; python 'main.py'
+        pw_args = [
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-Command",
+            f"& '{server_activate}'; python '{server_main}'",
+        ]
+        # Start only the optional chatbot MCP server via stdio here. The Manim
+        # MCP server is launched separately and is not auto-spawned by the API.
+        client = MultiServerMCPClient({
+            "chatbot-server": {
+                "transport": "stdio",
+                "command": "powershell.exe",
+                "args": pw_args,
+            }
+        })
+
+        try:
+            tools = await client.get_tools()
+        except Exception as exc:
+            print("Failed to start the configured chatbot MCP server; continuing with built-in tools only")
+            print("Check SERVER_ACTIVATE and SERVER_MAIN if MCP tools are required")
+            print("Error:", exc)
+    else:
+        print("Optional chatbot MCP server is not configured; using built-in tools only")
 
     try:
         existing_names = [getattr(t, "name", "").lower() for t in tools]
