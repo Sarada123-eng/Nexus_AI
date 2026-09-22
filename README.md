@@ -2,8 +2,6 @@
 
 A full-stack AI assistant built with **LangGraph**, **FastAPI**, **Next.js**, and **ChromaDB**. The application supports conversational chat with persistent threads, tool calling, long-term user memory, document-grounded RAG, and an asynchronous research workflow that can produce illustrated Markdown articles.
 
-> **Project status:** This repository is an active development workspace. The core application runs locally, but authentication, durable job execution, observability, and deployment automation should be completed before exposing it to untrusted users.
-
 ## What it does
 
 - Streams assistant responses over Server-Sent Events (SSE).
@@ -168,4 +166,4 @@ Create a focused branch, keep generated and practice material out of commits, do
 
 ## License
 
-No root-level license is currently declared. Add a license file before distributing this project or accepting external contributions. The optional Manim MCP service has its own license information in [`manim-mcp-server/LICENSE.txt`](manim-mcp-server/LICENSE.txt).
+ The optional Manim MCP service has its own license information in [`manim-mcp-server/LICENSE.txt`](manim-mcp-server/LICENSE.txt).
