@@ -15,17 +15,26 @@ __pycache__/
 venv/
 env/
 ENV/
+**/.venv/
+**/venv/
+**/env/
+**/ENV/
 
 # Local env / secrets
 .env
 .env.*
 !.env.example
 credentials.json
+token.json
+*.pem
 
 # Local databases / app state
 chatbot.db
 chatbot.db-shm
 chatbot.db-wal
+*.db
+*.db-shm
+*.db-wal
 *.sqlite3
 chroma_db/
 
@@ -35,6 +44,8 @@ manim-mcp-server/src/media/
 build/
 dist/
 coverage/
+.coverage
+.coverage.*
 *.egg-info/
 
 # JavaScript / TypeScript artifacts
@@ -45,8 +56,17 @@ out/
 
 # Scratch / practice work
 practice/
+*.ipynb
 _repro.py
 tmp_*.py
+inspect_chatgroq.py
+invoke_test.py
+quick_calc_test.py
+quick_calc_star_test.py
+streamlit_frontend.py
+Building Production-Grade AI Agents
+Prompt Engineering vs Context Engineering
+Why RAG Is Not Enough
 
 # Logs and misc temp files
 *.log
